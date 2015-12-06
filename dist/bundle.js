@@ -1,0 +1,1 @@
+console.error("Error: Cannot find module '../../lib' from '/Users/bokuweb/Dropbox/react-motion-menu/example/src'");
