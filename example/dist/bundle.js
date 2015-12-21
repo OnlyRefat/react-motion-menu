@@ -292,11 +292,11 @@ var _get = function get(_x, _x2, _x3) {
   var _again = true;_function: while (_again) {
     var object = _x,
         property = _x2,
-        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+        receiver = _x3;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
       var parent = Object.getPrototypeOf(object);if (parent === null) {
         return undefined;
       } else {
-        _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+        _x = parent;_x2 = property;_x3 = receiver;_again = true;desc = parent = undefined;continue _function;
       }
     } else if ('value' in desc) {
       return desc.value;
@@ -443,11 +443,11 @@ var _get = function get(_x, _x2, _x3) {
   var _again = true;_function: while (_again) {
     var object = _x,
         property = _x2,
-        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+        receiver = _x3;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
       var parent = Object.getPrototypeOf(object);if (parent === null) {
         return undefined;
       } else {
-        _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+        _x = parent;_x2 = property;_x3 = receiver;_again = true;desc = parent = undefined;continue _function;
       }
     } else if ('value' in desc) {
       return desc.value;
@@ -649,11 +649,11 @@ var _get = function get(_x, _x2, _x3) {
   var _again = true;_function: while (_again) {
     var object = _x,
         property = _x2,
-        receiver = _x3;desc = parent = getter = undefined;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
+        receiver = _x3;_again = false;if (object === null) object = Function.prototype;var desc = Object.getOwnPropertyDescriptor(object, property);if (desc === undefined) {
       var parent = Object.getPrototypeOf(object);if (parent === null) {
         return undefined;
       } else {
-        _x = parent;_x2 = property;_x3 = receiver;_again = true;continue _function;
+        _x = parent;_x2 = property;_x3 = receiver;_again = true;desc = parent = undefined;continue _function;
       }
     } else if ('value' in desc) {
       return desc.value;
@@ -698,6 +698,7 @@ var Item = (function (_Component) {
     _classCallCheck(this, Item);
 
     _get(Object.getPrototypeOf(Item.prototype), 'constructor', this).call(this, props);
+    this.timerIds = [null, null, null];
     this.state = { sequence: 0 };
     var _props = this.props;
     var x = _props.x;
@@ -744,12 +745,14 @@ var Item = (function (_Component) {
     value: function start() {
       var _this = this;
 
-      setTimeout(function () {
+      this.timerIds[1] = setTimeout(function () {
         _this.setState({ sequence: 1 });
+        _this.timerIds[1] = null;
       }, 60);
 
-      setTimeout(function () {
+      this.timerIds[2] = setTimeout(function () {
         _this.setState({ sequence: 2 });
+        _this.timerIds[2] = null;
         if (_this.props.onOpenAnimationEnd) _this.props.onOpenAnimationEnd(_this.props.name);
       }, 80);
     }
@@ -758,9 +761,12 @@ var Item = (function (_Component) {
     value: function reverse() {
       var _this2 = this;
 
-      setTimeout(function () {
+      clearTimeout(this.timerIds[1]);
+      clearTimeout(this.timerIds[2]);
+      this.timerIds[0] = setTimeout(function () {
         if (_this2.props.onCloseAnimationEnd) _this2.props.onCloseAnimationEnd(_this2.props.name);
-      }, 80);
+        _this2.timerIds[0] = null;
+      }, 100);
       this.setState({ sequence: 0 });
     }
   }, {
